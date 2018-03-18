@@ -134,7 +134,7 @@ betterEncodeName str = concatMap (\c -> betterEncodeNameAux c) str
 dezCharAux :: String -> String
 dezCharAux str
     | length str > 10  = take 10 str
-    | length str < 10  = take 10 (concat [str, ".........."]) -- concatenar (10 - length str) vezes colocando "."
+    | length str < 10  = take 10 (concat [str, ".........."])
     | otherwise        = str
 
 dezChar :: [String] -> [String]
