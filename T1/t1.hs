@@ -7,7 +7,6 @@
 ---------------------------
 
 
-
 import Data.Char
 
 -- Exercicio 1
@@ -117,17 +116,18 @@ encodeName str = map encodeNameAux str
 
 -- Exercicio 11
 
-betterEncodeNameAux :: Char -> Char
+betterEncodeNameAux :: Char -> String
 betterEncodeNameAux c
-    | c == 'A' || c == 'a' = '4'
-    | c == 'E' || c == 'e' = '3'
-    | c == 'I' || c == 'i' = '1'
-    | c == 'O' || c == 'o' = '0'
-    | c == 'U' || c == 'u' = '0'
-    | otherwise = c
+  | c == 'a' || c == 'A' = "4"
+  | c == 'e' || c == 'E' = "3"
+  | c == 'i' || c == 'I' = "1"
+  | c == 'o' || c == 'O' = "0"
+  | c == 'u' || c == 'U' = "00"
+  | otherwise            = [c]
 
--- betterEncodeName :: String -> String
--- betterEncodeName str = map (\c -> if c == 'U' || c == 'u' then "00" else betterEncodeNameAux c) str
+betterEncodeName :: String -> String
+betterEncodeName str = concatMap (\c -> getBetterValue c) str
+
 
 -- Exercicio 12
 
