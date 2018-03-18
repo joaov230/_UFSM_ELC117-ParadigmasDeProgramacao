@@ -118,12 +118,12 @@ encodeName str = map encodeNameAux str
 
 betterEncodeNameAux :: Char -> String
 betterEncodeNameAux c
-  | c == 'a' || c == 'A' = "4"
-  | c == 'e' || c == 'E' = "3"
-  | c == 'i' || c == 'I' = "1"
-  | c == 'o' || c == 'O' = "0"
-  | c == 'u' || c == 'U' = "00"
-  | otherwise            = [c]
+    | c == 'a' || c == 'A' = "4"
+    | c == 'e' || c == 'E' = "3"
+    | c == 'i' || c == 'I' = "1"
+    | c == 'o' || c == 'O' = "0"
+    | c == 'u' || c == 'U' = "00"
+    | otherwise            = [c]
 
 betterEncodeName :: String -> String
 betterEncodeName str = concatMap (\c -> betterEncodeNameAux c) str
