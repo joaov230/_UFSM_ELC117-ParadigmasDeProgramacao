@@ -126,7 +126,7 @@ betterEncodeNameAux c
   | otherwise            = [c]
 
 betterEncodeName :: String -> String
-betterEncodeName str = concatMap (\c -> getBetterValue c) str
+betterEncodeName str = concatMap (\c -> betterEncodeNameAux c) str
 
 
 -- Exercicio 12
