@@ -12,26 +12,26 @@ decodeChar n = chr (ord 'a' + n)
 percent :: Int -> Int -> Float
 percent n m = (fromIntegral n / fromIntegral m)*100
 
--- -- Rotacao de uma lista para esquerda em n posicoes
--- rotate :: Int -> [a] -> [a]
--- rotate n xs = drop n xs ++ take n xs
---
--- -- Tabela de frequencias das letras 'a'..'z' (lingua portuguesa)
--- -- https://pt.wikipedia.org/wiki/Frequ%C3%AAncia_de_letras
--- table :: [Float]
--- table = [14.6, 1.0, 3.9, 5.0, 12.6, 1.0, 1.3, 1.3, 6.2, 0.4, 0.1, 2.8, 4.7,
---          5.0, 10.7, 2.5, 1.2, 6.5, 7.8, 4.3, 4.6, 1.7, 0.1, 0.2, 0.1, 0.5]
---
--- -- Distancia entre 2 listas de frequencia
--- chi2 :: [Float] -> [Float] -> Float
--- chi2 os es = sum [((o-e)^2)/e | (o,e) <- zip os es]
---
--- -- Use esta funcao para decodificar uma mensagem!
--- crack :: String -> String
--- crack cs = encodeStr cs (-factor)
---            where factor = head (positions (minimum chitab) chitab)
---                  chitab = [ chi2 (rotate n table' ) table | n <- [0..25] ]
---                  table' = freqs cs
+-- Rotacao de uma lista para esquerda em n posicoes
+rotate :: Int -> [a] -> [a]
+rotate n xs = drop n xs ++ take n xs
+
+-- Tabela de frequencias das letras 'a'..'z' (lingua portuguesa)
+-- https://pt.wikipedia.org/wiki/Frequ%C3%AAncia_de_letras
+table :: [Float]
+table = [14.6, 1.0, 3.9, 5.0, 12.6, 1.0, 1.3, 1.3, 6.2, 0.4, 0.1, 2.8, 4.7,
+         5.0, 10.7, 2.5, 1.2, 6.5, 7.8, 4.3, 4.6, 1.7, 0.1, 0.2, 0.1, 0.5]
+
+-- Distancia entre 2 listas de frequencia
+chi2 :: [Float] -> [Float] -> Float
+chi2 os es = sum [((o-e)^2)/e | (o,e) <- zip os es]
+
+-- Use esta funcao para decodificar uma mensagem!
+crack :: String -> String
+crack cs = encodeStr cs (-factor)
+           where factor = head (positions (minimum chitab) chitab)
+                 chitab = [ chi2 (rotate n table' ) table | n <- [0..25] ]
+                 table' = freqs cs
 
 -- Ex 1
 
@@ -76,3 +76,15 @@ countChar c str = countCharAux str c 0
 
 freqs :: String -> [Float]
 freqs str = [percent (countChar x str) (countValids str) | x <- ['a'..'z']]
+
+
+-- Ex 6
+
+-- Combina o elemento da lista com a sua respectiva posicao
+positionsAux :: [Float] -> [(Float, Int)]
+positionsAux list = zip list [0..(length list)]
+
+-- Filtra a lista de tuplas, deixando apenas os que o primeiro elemento seja igual ao "num"
+-- Pega a segunda posicao de todas essas tuplas filtradas, afinal a segunda posição da tupla é a posicao do elemento na lista
+positions :: Float -> [Float] -> [Int]
+positions num list = map snd (filter ((==num).fst) (positionsAux list))
