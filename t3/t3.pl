@@ -49,3 +49,30 @@ potenciasAux(N,L) :-
   R is 2^N2,
   L = [R|T],
   potenciasAux(N2,T).
+
+
+% Ex 7
+
+positivos([],[]).
+positivos(L1,L2) :-
+  L1 = [H|T],
+  L2 = [H2|T2],
+  H > 0,
+  H2 is H,
+  positivos(T,T2).
+
+positivos(L1,L2) :-
+  L1 = [_|T],
+  positivos(T,L2).
+
+
+% Ex 8
+
+mesmaPosicao(A,L1,L2) :-
+  L1 = [_|T],
+  L2 = [_|T2],
+  mesmaPosicao(A,T,T2).
+
+mesmaPosicao(A,L1,L2) :-
+  L1 = [A|_],
+  L2 = [A|_].
