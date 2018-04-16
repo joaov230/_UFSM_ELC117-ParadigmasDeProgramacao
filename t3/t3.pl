@@ -87,6 +87,23 @@ comissao(NP, LP, [H|T]) :-
     comissaoAux(H, LP, Rem),
     comissao(N1, Rem, T).
 
+
 comissaoAux(H,[H|T],T).
 comissaoAux(N,[_|T],C) :-
     comissaoAux(N,T,C).
+
+
+% Ex 10
+
+arredondaRaizAoQuadrado(N,Pow) :-
+  sqrt(N,R),
+  floor(R,L),
+  pow(L,2,Pow).
+
+azulejos(0,0).
+azulejos(1,1).
+azulejos(NA,NQ) :-
+  arredondaRaizAoQuadrado(NA,Quad),
+  NA2 is NA - Quad,
+  azulejos(NA2,Result),
+  NQ is Result + 1.
