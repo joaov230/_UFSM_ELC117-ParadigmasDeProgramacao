@@ -76,3 +76,17 @@ mesmaPosicao(A,L1,L2) :-
 mesmaPosicao(A,L1,L2) :-
   L1 = [A|_],
   L2 = [A|_].
+
+
+% Ex 9
+
+comissao(0, _, []).
+comissao(NP, LP, [H|T]) :-
+    NP > 0,
+    N1 is NP - 1,
+    comissaoAux(H, LP, Rem),
+    comissao(N1, Rem, T).
+
+comissaoAux(H,[H|T],T).
+comissaoAux(N,[_|T],C) :-
+    comissaoAux(N,T,C).
