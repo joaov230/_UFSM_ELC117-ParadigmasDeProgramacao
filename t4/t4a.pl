@@ -33,12 +33,12 @@
 autoral(z,_) :- fail(), !.
 autoral(_,Id) :-
   Id =\= 6,
-  Id =:= 1.
+  Id >= 1.
 
 rock(z,_).
 rock(_,Id) :-
+  Id > 1,
   Id =:= 6,
-  Id =\= 1,
   Id =\= 5,
   Id =\= 7.
 
@@ -73,24 +73,36 @@ regra4(E) :-
   rock(Rock,6).
 
 
-regra5([A],7) :-
-  autoral(A,7), !.
 
-regra5(E,Id) :-
+regra5aux([A],7) :-
+  autoral(A,7).
+
+regra5aux(E,Id) :-
   E = [H|T],
   T = [H2|_],
   Prox is Id+1,
   autoral(H,Id),
   autoral(H2,Prox),
-  regra5(T,Prox).
+  regra5aux(T,Prox).
 
-regra5(E,Id) :-
+regra5aux(E,Id) :-
   E = [H|T],
   T = [H2|_],
   Prox is Id+1,
   autoral(H,Id),
   rock(H2,Prox),
-  regra5(T,Prox).
+  regra5aux(T,Prox).
+
+regra5aux(E,Id) :-
+  E = [H|T],
+  T = [H2|_],
+  Prox is Id+1,
+  rock(H,Id),
+  autoral(H2,Prox),
+  regra5aux(T,Prox).
+
+regra5(E) :-
+  regra5aux(E,1).
 
 
 
@@ -98,4 +110,5 @@ cdindependente(E) :-
   regra1(E),
   regra2(E),
   regra3(E),
-  regra4(E).
+  regra4(E),
+  regra5(E).
