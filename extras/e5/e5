@@ -1,0 +1,27 @@
+POSCOMP - 2006
+Questão 63 - Paradigma Lógico (Prolog)
+
+
+Considere o programa Prolog: 
+
+blabla([ ],L,L).
+
+blabla([X|L1],L2,[X|L3]):- 
+  blabla(L1,L2,L3).
+
+
+
+Quantas possıveis respostas a interrogacao abaixo fornece (considerando o backtracking)?
+
+?- blabla(L1,L2,[a,b]).
+
+Resposta correta: alternativa C (3 possiveis respostas)
+
+
+
+- 3 Possiveis respostas:
+ -> 1ª - Enxe a L2 e mantem a L1 vazia (entra no fato).
+ Redo:
+ -> 2ª - Metade vai para a L1 e metade para a L2 (entra uma vez na clausula).
+ Redo:
+ -> 3ª - Enxe a L1 e mantem a L2 vazia (backtracking "retornando" pela segunda vez na clausula).
