@@ -1,0 +1,24 @@
+POSCOMP 2015
+Questão 25 - Paradigma Funcional
+
+
+A linguagem de programação LISP usa o paradigma de:
+
+A) programação procedural.
+B) programação de tipos abstratos de dados.
+C) programação orientada a objetos.
+D) programação funcional.
+E) programação declarativa
+
+Resposta correta: D
+
+Explicação da resposta e um breve resumo sobre como a linguagem LISP funciona:
+
+LISP (List Processing) é uma linguagem criada inspirada em funções matemáticas, que é uma das características
+mais importantes de uma linguagem funcional (que busca praticidade). 
+
+A linguagem LISP avalia expressões aritméticas, como uma "calculadora".
+
+Essa linguagem faz uso do processamento de listas nativamente, interpretando os dados e as instruções como listas,
+o que facilita o processamento de funções de ordem elevada (uma função dentro de uma função, dentro de uma função...), característica
+muito importante de uma linguagem do paradigma funcional.
