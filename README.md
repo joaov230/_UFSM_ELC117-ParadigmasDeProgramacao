@@ -9,3 +9,5 @@ Repositório para cadeira de Paradigmas de Programação
 [Trabalho 3](t3/t3.pl)
 
 [Trabalho 4](t4)
+
+[Aulas Praticas (OO)](oo-praticas)
