@@ -2,7 +2,7 @@
 
 Repositório para cadeira de Paradigmas de Programação
 
-[Trabalho 1 (Haskell)](T1/t1.hs)
+[Trabalho 1 (Haskell)](t1/t1.hs)
 
 [Trabalho 2(Haskell)](t2)
 
