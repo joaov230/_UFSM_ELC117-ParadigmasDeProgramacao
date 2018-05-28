@@ -10,4 +10,6 @@ Repositório para cadeira de Paradigmas de Programação
 
 [Trabalho 4](t4)
 
+[Trabalho 5](t5/src/com/company)
+
 [Aulas Praticas (OO)](oo-praticas)
