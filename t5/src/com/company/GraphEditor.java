@@ -6,6 +6,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -33,8 +34,8 @@ import java.util.Set;
 public class GraphEditor extends Application {
 
     Grafo grafo;
-    String strColor;
-    Color color;
+    String strColor = "#FF0000";
+    Color color = Color.RED;
     int shapeControler;
     //    0 when circle
     //    1 when square
@@ -43,6 +44,9 @@ public class GraphEditor extends Application {
     Vertice vert;
 
     Pane pane;
+    Label labelVert;
+    Label labelAresta;
+
     Rectangle rect;
     Circle c;
     Line line;
@@ -106,11 +110,19 @@ public class GraphEditor extends Application {
             }
         });
 
+        labelVert = new Label(grafo.getSize() + " vertices");
+        labelAresta = new Label(grafo.getTotalConnections() + " arestas");
+        labelVert.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        labelAresta.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        labelVert.setMinSize(90, 30);
+        labelAresta.setMinSize(90, 30);
+        labelVert.setAlignment(Pos.CENTER);
+        labelAresta.setAlignment(Pos.CENTER);
 
         VBox vb = new VBox();
         vb.setSpacing(2);
         vb.setAlignment(Pos.CENTER);
-        vb.getChildren().addAll(btnShapeCircle, btnShapeSquare, btnRed, btnGreen, btnBlue);
+        vb.getChildren().addAll(labelVert, labelAresta, btnShapeCircle, btnShapeSquare, btnRed, btnGreen, btnBlue);
 
         pane = new Pane();
 
@@ -137,18 +149,20 @@ public class GraphEditor extends Application {
             @Override
             public void handle(MouseEvent event) {
                 if (shapeControler == 1) {
-                    double dist = event.getX() - rect.getX();
-                    if (dist < 0)
-                        dist = 0;
+                    double dist = Math.abs(event.getX() - rect.getX());
                     if (dist > 60)
                         dist = 60;
                     rect.setWidth(dist);
                     rect.setHeight(dist);
+                    rect.setArcHeight(10);
+                    rect.setArcWidth(10);
+                    labelVert.setText(grafo.getSize() + " vertices");
                 } else if (shapeControler == 0){
                     double dist = Math.abs(Math.hypot(event.getX(), event.getY()) - Math.hypot(c.getCenterX(), c.getCenterY()));
                     if (dist >= 30)
                         dist = 30;
                     c.setRadius(dist);
+                    labelVert.setText(grafo.getSize() + " vertices");
                 }
             }
         });
@@ -172,19 +186,23 @@ public class GraphEditor extends Application {
                 if (click == false) {
                     click = true;
                     vert = grafo.getVertexByShape(circulo);
+                    System.out.println("Antes de conectar:");
                     vert.printConnections();
                 } else if (click == true) {
                     Vertice vertiLocal = grafo.getVertexByShape(circulo);
                     if (!(vert == vertiLocal || vert.isConnected(vertiLocal))) {
                         click = false;
                         vert.connect(vertiLocal);
+                        vertiLocal.connect(vert);
+                        System.out.println("Apos de conectar:");
+                        vert.printConnections();
+                        labelAresta.setText(grafo.getTotalConnections() + " arestas");
                         drawLine(vert, vertiLocal);
                     }
                 }
             }
         });
     }
-
 
 //  Define se vai desenhar a linha ou não
     public void setRetangulo (Rectangle retangulo) {
@@ -194,12 +212,16 @@ public class GraphEditor extends Application {
                 if (click == false) {
                     click = true;
                     vert = grafo.getVertexByShape(retangulo);
+                    System.out.println("Antes de conectar:");
                     vert.printConnections();
                 } else {
                     Vertice vertiLocal = grafo.getVertexByShape(retangulo);
                     if (!(vert == vertiLocal || vert.isConnected(vertiLocal))) {
                         click = false;
                         vert.connect(vertiLocal);
+                        vertiLocal.connect(vert);
+                        System.out.println("Apos de conectar:");
+                        labelAresta.setText(grafo.getTotalConnections() + " arestas");
                         drawLine(vert, vertiLocal);
                     }
                 }

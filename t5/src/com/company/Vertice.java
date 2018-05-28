@@ -11,11 +11,11 @@ import java.util.ArrayList;
 // 1 - Circle
 public class Vertice {
 
-    int index;
-    public ArrayList<Vertice> adjacentes;
-    public int vertexShape;
-    public Rectangle rect;
-    public Circle circle;
+    private int index;
+    private ArrayList<Vertice> adjacentes;
+    private int vertexShape;
+    private Rectangle rect;
+    private Circle circle;
 
 
     public Vertice(int shape, Circle thisCircle, int id) {

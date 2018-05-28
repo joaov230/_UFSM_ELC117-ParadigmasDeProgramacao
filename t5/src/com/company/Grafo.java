@@ -11,8 +11,8 @@ import java.util.ArrayList;
 
 public class Grafo {
 
-    public ArrayList<Vertice> vertices;
-    int contVert;
+    private ArrayList<Vertice> vertices;
+    private int contVert;
 
 
 //    Constructor
@@ -31,18 +31,38 @@ public class Grafo {
         contVert++;
     }
 
-    public int getGraphSize () {
+    public int getSize () {
         return vertices.size();
     }
 
+    public int getTotalConnections () {
+        int somatorio = 0;
+        for (Vertice vert : vertices) {
+            somatorio += vert.getConnectionsSize();
+        }
+        return (somatorio/2);
+    }
+
     public Circle getLastCircleVertex () {
-        Vertice v = vertices.get(vertices.size()-1);
-        return v.getCircle();
+//        Vertice v = vertices.get(vertices.size()-1);
+        for (int i = vertices.size()-1; i >= 0; i--) {
+            if (vertices.get(i).getRect() == null) {
+                return vertices.get(i).getCircle();
+            }
+        }
+        return null;
+//        return v.getCircle();
     }
 
     public Rectangle getLastRectVertex () {
-        Vertice v = vertices.get(vertices.size()-1);
-        return v.getRect();
+//        Vertice v = vertices.get(vertices.size()-1);
+        for (int i = vertices.size()-1; i >= 0; i--) {
+            if (vertices.get(i).getCircle() == null) {
+                return vertices.get(i).getRect();
+            }
+        }
+        return null;
+//        return v.getRect();
     }
 
     public int getVertexId (Vertice v) {
