@@ -41,6 +41,7 @@ public class GraphEditor extends Application {
     Pane pane;
     Label labelVert;
     Label labelAresta;
+    Label labelSelect;
 
     Rectangle rect;
     Circle c;
@@ -116,6 +117,10 @@ public class GraphEditor extends Application {
         labelAresta.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
         labelAresta.setMinSize(90, 30);
         labelAresta.setAlignment(Pos.CENTER);
+        labelSelect = new Label("Select");
+        labelSelect.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        labelSelect.setMinSize(90, 30);
+        labelSelect.setAlignment(Pos.CENTER);
 
         ///////////////////////////////////////////
         // Botões das configs
@@ -147,7 +152,7 @@ public class GraphEditor extends Application {
         VBox vb = new VBox();
         vb.setSpacing(2);
         vb.setAlignment(Pos.CENTER);
-        vb.getChildren().addAll(labelVert, labelAresta);
+        vb.getChildren().addAll(labelVert, labelAresta, labelSelect);
 
         ToolBar tbTop = new ToolBar();
         tbTop.setOrientation(Orientation.HORIZONTAL);
@@ -221,6 +226,9 @@ public class GraphEditor extends Application {
                 if (click == false) {
                     click = true;
                     vert = grafo.getVertexByShape(circulo);
+                    labelSelect.setText("Selected");
+                    labelSelect.setTextFill(Paint.valueOf("#FF0000"));
+                    labelSelect.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
                 } else if (click == true) {
                     Vertice vertiLocal = grafo.getVertexByShape(circulo);
                     if (!(vert == vertiLocal || vert.isConnected(vertiLocal))) {
@@ -229,6 +237,9 @@ public class GraphEditor extends Application {
                         grafo.connectVertex(vert, vertiLocal, line);
                         pane.getChildren().add(vert.getAdj(vert, vertiLocal).getLine());
                         labelAresta.setText(grafo.getTotalConnections() + " arestas");
+                        labelSelect.setText("Select");
+                        labelSelect.setTextFill(Paint.valueOf("#000000"));
+                        labelSelect.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
                     }
                 }
             }
@@ -243,6 +254,7 @@ public class GraphEditor extends Application {
                 if (click == false) {
                     click = true;
                     vert = grafo.getVertexByShape(retangulo);
+
                 } else {
                     Vertice vertiLocal = grafo.getVertexByShape(retangulo);
                     if (!(vert == vertiLocal || vert.isConnected(vertiLocal))) {
