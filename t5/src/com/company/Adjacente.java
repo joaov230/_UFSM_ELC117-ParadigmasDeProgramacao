@@ -7,9 +7,9 @@ import javafx.scene.shape.Rectangle;
 
 public class Adjacente {
 
-    public Vertice ini;
-    public Vertice fim;
-    public Line line;
+    private Vertice ini;
+    private Vertice fim;
+    private Line line;
 
 
     public Adjacente(Vertice thisIni, Vertice thisFim, Line thisLine) {

@@ -14,7 +14,7 @@ public class Vertice {
 
     private int index;
 
-    public  ArrayList<Adjacente> adjacentes;
+    private  ArrayList<Adjacente> adjacentes;
 
     private int vertexShape;
     private Rectangle rect;

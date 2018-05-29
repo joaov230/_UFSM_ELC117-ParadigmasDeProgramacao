@@ -1,14 +1,17 @@
 package com.company;
 
 import javafx.application.Application;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToolBar;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -21,7 +24,11 @@ import javafx.stage.Stage;
 import sun.awt.Symbol;
 import sun.security.provider.certpath.Vertex;
 
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -42,6 +49,7 @@ public class GraphEditor extends Application {
     Label labelVert;
     Label labelAresta;
     Label labelSelect;
+    Label labelIntersect;
 
     Rectangle rect;
     Circle c;
@@ -113,14 +121,21 @@ public class GraphEditor extends Application {
         labelVert.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
         labelVert.setMinSize(90, 30);
         labelVert.setAlignment(Pos.CENTER);
+
         labelAresta = new Label(grafo.getTotalConnections() + " arestas");
         labelAresta.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
         labelAresta.setMinSize(90, 30);
         labelAresta.setAlignment(Pos.CENTER);
+
         labelSelect = new Label("Select");
         labelSelect.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
         labelSelect.setMinSize(90, 30);
         labelSelect.setAlignment(Pos.CENTER);
+
+        labelIntersect = new Label (grafo.verifyIntesection() + " interseções");
+        labelIntersect.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        labelIntersect.setMinSize(90,30);
+        labelIntersect.setAlignment(Pos.CENTER);
 
         ///////////////////////////////////////////
         // Botões das configs
@@ -137,7 +152,16 @@ public class GraphEditor extends Application {
         btnSave.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-//                Salvar em SVG
+                try {
+                    SnapshotParameters parameters = new SnapshotParameters();
+                    WritableImage wi = new WritableImage(800,600);
+                    WritableImage snapshot = pane.snapshot(new SnapshotParameters(), null);
+
+                    File output = new File ("C:/Users/Seven/Pictures/IDE/snapshot-" + new Date().getTime() + ".png");
+                    ImageIO.write(SwingFXUtils.fromFXImage(snapshot, null), "png", output);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
         btnExit.setOnAction(new EventHandler<ActionEvent>() {
@@ -152,7 +176,7 @@ public class GraphEditor extends Application {
         VBox vb = new VBox();
         vb.setSpacing(2);
         vb.setAlignment(Pos.CENTER);
-        vb.getChildren().addAll(labelVert, labelAresta, labelSelect);
+        vb.getChildren().addAll(labelVert, labelAresta, labelIntersect, labelSelect);
 
         ToolBar tbTop = new ToolBar();
         tbTop.setOrientation(Orientation.HORIZONTAL);
@@ -226,6 +250,7 @@ public class GraphEditor extends Application {
                 if (click == false) {
                     click = true;
                     vert = grafo.getVertexByShape(circulo);
+
                     labelSelect.setText("Selected");
                     labelSelect.setTextFill(Paint.valueOf("#FF0000"));
                     labelSelect.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
@@ -237,6 +262,9 @@ public class GraphEditor extends Application {
                         grafo.connectVertex(vert, vertiLocal, line);
                         pane.getChildren().add(vert.getAdj(vert, vertiLocal).getLine());
                         labelAresta.setText(grafo.getTotalConnections() + " arestas");
+
+                        labelIntersect.setText(grafo.verifyIntesection() + " interceções");
+
                         labelSelect.setText("Select");
                         labelSelect.setTextFill(Paint.valueOf("#000000"));
                         labelSelect.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
@@ -254,7 +282,9 @@ public class GraphEditor extends Application {
                 if (click == false) {
                     click = true;
                     vert = grafo.getVertexByShape(retangulo);
-
+                    labelSelect.setText("Selected");
+                    labelSelect.setTextFill(Paint.valueOf("#FF0000"));
+                    labelSelect.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
                 } else {
                     Vertice vertiLocal = grafo.getVertexByShape(retangulo);
                     if (!(vert == vertiLocal || vert.isConnected(vertiLocal))) {
@@ -263,6 +293,9 @@ public class GraphEditor extends Application {
                         grafo.connectVertex(vert, vertiLocal, line);
                         pane.getChildren().add(vert.getAdj(vert, vertiLocal).getLine());
                         labelAresta.setText(grafo.getTotalConnections() + " arestas");
+                        labelSelect.setText("Select");
+                        labelSelect.setTextFill(Paint.valueOf("#000000"));
+                        labelSelect.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
                     }
                 }
             }

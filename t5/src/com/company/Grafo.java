@@ -6,6 +6,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
+import java.awt.geom.Line2D;
 import java.util.ArrayList;
 
 
@@ -13,12 +14,14 @@ import java.util.ArrayList;
 public class Grafo {
 
     private ArrayList<Vertice> vertices;
+    private ArrayList<Adjacente> linhasAdjacentes;
     private int contVert;
 
 
 //    Constructor
     public Grafo () {
         vertices = new ArrayList<Vertice>();
+        linhasAdjacentes = new ArrayList<Adjacente>();
         contVert = 0;
     }
 
@@ -35,6 +38,29 @@ public class Grafo {
     public void connectVertex(Vertice vertex1, Vertice vertex2, Line line) {
         vertex1.connect(vertex1, vertex2, line);
         vertex2.connect(vertex2, vertex1, line);
+        linhasAdjacentes.add(new Adjacente(vertex1, vertex2, line));
+    }
+
+    public int verifyIntesection () {
+        int somador = 0;
+        for (Adjacente l1 : linhasAdjacentes) {
+            for (Adjacente l2 : linhasAdjacentes) {
+                if ((l1.getIni().equals(l2.getIni())) || (l1.getFim().equals(l2.getFim())) ||
+                        (l1.getIni().equals(l2.getFim())) || (l1.getFim().equals(l2.getIni())))
+                    continue;
+
+                if (l1.equals(l2))
+                    continue;
+
+                if (Line2D.linesIntersect(l1.getLine().getStartX(), l1.getLine().getStartY(), l1.getLine().getEndX(),
+                        l1.getLine().getEndY(), l2.getLine().getStartX(), l2.getLine().getStartY(), l2.getLine().getEndX(),
+                        l2.getLine().getEndY())) {
+                    somador++;
+                }
+            }
+        }
+
+        return (somador/2);
     }
 
     public void clear () {
