@@ -2,6 +2,7 @@ package com.company;
 
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
@@ -31,8 +32,34 @@ public class Grafo {
         contVert++;
     }
 
+    public void connectVertex(Vertice vertex1, Vertice vertex2, Line line) {
+        vertex1.connect(vertex1, vertex2, line);
+        vertex2.connect(vertex2, vertex1, line);
+    }
+
+    public void clear () {
+        vertices.clear();
+        contVert = 0;
+    }
+
+
+//    Deixar do jeito certo
     public int getSize () {
-        return vertices.size();
+        int cont = 0;
+        for (Vertice v : vertices) {
+            if (v.getRect() != null) {
+                if (v.getRect().getWidth() > 3) {
+                    cont++;
+                }
+            }
+            if (v.getCircle() != null) {
+                if (v.getCircle().getRadius() > 3) {
+                    cont++;
+                }
+            }
+        }
+        return cont;
+//        return vertices.size();
     }
 
     public int getTotalConnections () {
@@ -44,25 +71,21 @@ public class Grafo {
     }
 
     public Circle getLastCircleVertex () {
-//        Vertice v = vertices.get(vertices.size()-1);
         for (int i = vertices.size()-1; i >= 0; i--) {
             if (vertices.get(i).getRect() == null) {
                 return vertices.get(i).getCircle();
             }
         }
         return null;
-//        return v.getCircle();
     }
 
     public Rectangle getLastRectVertex () {
-//        Vertice v = vertices.get(vertices.size()-1);
         for (int i = vertices.size()-1; i >= 0; i--) {
             if (vertices.get(i).getCircle() == null) {
                 return vertices.get(i).getRect();
             }
         }
         return null;
-//        return v.getRect();
     }
 
     public int getVertexId (Vertice v) {

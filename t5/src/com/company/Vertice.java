@@ -1,6 +1,7 @@
 package com.company;
 
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 
 import java.awt.*;
@@ -12,14 +13,16 @@ import java.util.ArrayList;
 public class Vertice {
 
     private int index;
-    private ArrayList<Vertice> adjacentes;
+
+    public  ArrayList<Adjacente> adjacentes;
+
     private int vertexShape;
     private Rectangle rect;
     private Circle circle;
 
 
     public Vertice(int shape, Circle thisCircle, int id) {
-        adjacentes = new ArrayList<Vertice>();
+        adjacentes = new ArrayList<Adjacente>();
         vertexShape = shape;
         circle = thisCircle;
         rect = null;
@@ -27,43 +30,32 @@ public class Vertice {
     }
 
     public Vertice(int shape, Rectangle thisRectangle, int id) {
-        adjacentes = new ArrayList<Vertice>();
+        adjacentes = new ArrayList<Adjacente>();
         vertexShape = shape;
         rect = thisRectangle;
         circle = null;
         index = id;
     }
 
-    //  Conecta esse vertice com outro vertice
-    public void connect (Vertice vertex) {
-        System.out.println(index + " conectou com " + vertex.getIndex());
-        adjacentes.add(vertex);
+    public void connect (Vertice vertex1, Vertice vertex2, Line line) {
+        adjacentes.add(new Adjacente(vertex1, vertex2, line));
     }
 
     public void printConnections () {
         System.out.print(index + " -> ");
-        for (Vertice aux : adjacentes) {
-            System.out.print(aux.getIndex() + " ");
+        for (Adjacente aux : adjacentes) {
+            System.out.print(aux.getFimIndex() + " ");
         }
         System.out.println(" ");
     }
 
-    public int getIndex () {
-        return index;
-    }
-
     public boolean isConnected (Vertice vertex) {
-        for (Vertice aux : adjacentes) {
-            if (vertex.getIndex() == aux.getIndex()) {
+        for (Adjacente aux : adjacentes) {
+            if (vertex.getIndex() == aux.getFimIndex()) {
                 return true;
             }
         }
         return false;
-    }
-
-
-    public int getConnectionsSize () {
-        return adjacentes.size();
     }
 
     public void setVertexShape (int shape) {
@@ -72,6 +64,23 @@ public class Vertice {
 
     public int getVertexShape () {
         return vertexShape;
+    }
+
+    public int getIndex () {
+        return index;
+    }
+
+    public Adjacente getAdj (Vertice vert1, Vertice vert2) {
+        for (Adjacente adj : adjacentes) {
+            if (adj.getIni().equals(vert1) && adj.getFim().equals(vert2)) {
+                return adj;
+            }
+        }
+        return null;
+    }
+
+    public int getConnectionsSize () {
+        return adjacentes.size();
     }
 
     public Circle getCircle () {

@@ -3,10 +3,12 @@ package com.company;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ToolBar;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -23,13 +25,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 
-// Implementar boolean que define se está clicando pela primeira vez ou segunda vez
-// Se for primeira, salva o vertice num vertice global e click = true;
-// Se for segunda, adiciona como vertice adjacente do primeiro e click = false;
-
-// IMPLEMENTAR DESENHO DE LINHAS (MAIS UM BOTÃO) (SÓ PODE DESENHAR SE ESTIVER EM CIMA DE UM CÍRCULO (E SÓ PODE PARAR
-// DE DESENHAR SE ESTIVER DENTRO DE OUTRO CÍRCULO)
-// Conectar o primeiro vertex com o vertex de quando o botão do mouse foi solto (desde que não sejam iguais)
 
 public class GraphEditor extends Application {
 
@@ -51,9 +46,6 @@ public class GraphEditor extends Application {
     Circle c;
     Line line;
 
-//    boolean drawTheLine = false;
-
-
 
     @Override
     public void start(Stage stage) {
@@ -62,6 +54,8 @@ public class GraphEditor extends Application {
 
         grafo = new Grafo();
 
+        ///////////////////////////////////////////
+        // Botões das cores
         Button btnRed = new Button();
         Button btnGreen = new Button();
         Button btnBlue = new Button();
@@ -92,7 +86,10 @@ public class GraphEditor extends Application {
                 color = Color.BLUE;
             }
         });
+        ///////////////////////////////////////////
 
+        ///////////////////////////////////////////
+        // Botões das formas
         Button btnShapeCircle = new Button("Circulo");
         Button btnShapeSquare = new Button("Quadrado");
 
@@ -109,22 +106,59 @@ public class GraphEditor extends Application {
                 shapeControler = 1;
             }
         });
+        ///////////////////////////////////////////
 
         labelVert = new Label(grafo.getSize() + " vertices");
-        labelAresta = new Label(grafo.getTotalConnections() + " arestas");
         labelVert.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-        labelAresta.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
         labelVert.setMinSize(90, 30);
-        labelAresta.setMinSize(90, 30);
         labelVert.setAlignment(Pos.CENTER);
+        labelAresta = new Label(grafo.getTotalConnections() + " arestas");
+        labelAresta.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        labelAresta.setMinSize(90, 30);
         labelAresta.setAlignment(Pos.CENTER);
+
+        ///////////////////////////////////////////
+        // Botões das configs
+        Button btnNew = new Button("New");
+        Button btnSave = new Button("Save");
+        Button btnExit = new Button("Exit");
+
+        btnNew.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                start(stage);
+            }
+        });
+        btnSave.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+//                Salvar em SVG
+            }
+        });
+        btnExit.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                System.exit(0);
+            }
+        });
+        ///////////////////////////////////////////
+
 
         VBox vb = new VBox();
         vb.setSpacing(2);
         vb.setAlignment(Pos.CENTER);
-        vb.getChildren().addAll(labelVert, labelAresta, btnShapeCircle, btnShapeSquare, btnRed, btnGreen, btnBlue);
+        vb.getChildren().addAll(labelVert, labelAresta);
+
+        ToolBar tbTop = new ToolBar();
+        tbTop.setOrientation(Orientation.HORIZONTAL);
+        tbTop.getItems().addAll(btnNew, btnSave, btnExit);
+
+        ToolBar tbRight = new ToolBar();
+        tbRight.setOrientation(Orientation.VERTICAL);
+        tbRight.getItems().addAll(btnShapeCircle, btnShapeSquare,btnRed, btnGreen, btnBlue, vb);
 
         pane = new Pane();
+
 
 
 //      Cria um shape e um vértice novo
@@ -137,7 +171,7 @@ public class GraphEditor extends Application {
                     setRetangulo(rect);
                     grafo.addRectVertex(shapeControler, rect);
                     pane.getChildren().add(grafo.getLastRectVertex());
-                } else if (shapeControler == 0){
+                } else if (shapeControler == 0) {
                     c = new Circle(event.getX(), event.getY(), 0, color);
                     setCirculo(c);
                     grafo.addCircleVertex(shapeControler, c);
@@ -169,8 +203,9 @@ public class GraphEditor extends Application {
 
 
         BorderPane bp = new BorderPane();
-        bp.setRight(vb);
         bp.setCenter(pane);
+        bp.setRight(tbRight);
+        bp.setTop(tbTop);
 
         Scene scene = new Scene(bp, 800, 600);
         stage.setScene(scene);
@@ -186,18 +221,14 @@ public class GraphEditor extends Application {
                 if (click == false) {
                     click = true;
                     vert = grafo.getVertexByShape(circulo);
-                    System.out.println("Antes de conectar:");
-                    vert.printConnections();
                 } else if (click == true) {
                     Vertice vertiLocal = grafo.getVertexByShape(circulo);
                     if (!(vert == vertiLocal || vert.isConnected(vertiLocal))) {
                         click = false;
-                        vert.connect(vertiLocal);
-                        vertiLocal.connect(vert);
-                        System.out.println("Apos de conectar:");
-                        vert.printConnections();
-                        labelAresta.setText(grafo.getTotalConnections() + " arestas");
                         drawLine(vert, vertiLocal);
+                        grafo.connectVertex(vert, vertiLocal, line);
+                        pane.getChildren().add(vert.getAdj(vert, vertiLocal).getLine());
+                        labelAresta.setText(grafo.getTotalConnections() + " arestas");
                     }
                 }
             }
@@ -212,17 +243,14 @@ public class GraphEditor extends Application {
                 if (click == false) {
                     click = true;
                     vert = grafo.getVertexByShape(retangulo);
-                    System.out.println("Antes de conectar:");
-                    vert.printConnections();
                 } else {
                     Vertice vertiLocal = grafo.getVertexByShape(retangulo);
                     if (!(vert == vertiLocal || vert.isConnected(vertiLocal))) {
                         click = false;
-                        vert.connect(vertiLocal);
-                        vertiLocal.connect(vert);
-                        System.out.println("Apos de conectar:");
-                        labelAresta.setText(grafo.getTotalConnections() + " arestas");
                         drawLine(vert, vertiLocal);
+                        grafo.connectVertex(vert, vertiLocal, line);
+                        pane.getChildren().add(vert.getAdj(vert, vertiLocal).getLine());
+                        labelAresta.setText(grafo.getTotalConnections() + " arestas");
                     }
                 }
             }
@@ -240,7 +268,6 @@ public class GraphEditor extends Application {
             line = new Line (c1.getCenterX(), c1.getCenterY(), c2.getCenterX(), c2.getCenterY());
             line.setStroke(Paint.valueOf(strColor));
             line.setStrokeWidth(3);
-            pane.getChildren().add(line);
         }
         if (shape1 == 0 && shape2 == 1) {
             Circle c1 = vert1.getCircle();
@@ -249,7 +276,6 @@ public class GraphEditor extends Application {
             line = new Line (c1.getCenterX(), c1.getCenterY(), r2.getX()+(r2.getWidth()/2), r2.getY()+(r2.getHeight()/2));
             line.setStroke(Paint.valueOf(strColor));
             line.setStrokeWidth(3);
-            pane.getChildren().add(line);
         }
         if (shape1 == 1 && shape2 == 0) {
             Rectangle r1 = vert1.getRect();
@@ -258,7 +284,6 @@ public class GraphEditor extends Application {
             line = new Line (r1.getX()+(r1.getWidth()/2), r1.getY()+(r1.getHeight()/2), c2.getCenterX(), c2.getCenterY());
             line.setStroke(Paint.valueOf(strColor));
             line.setStrokeWidth(3);
-            pane.getChildren().add(line);
         }
         if (shape1 == 1 && shape2 == 1) {
             Rectangle r1 = vert1.getRect();
@@ -267,9 +292,9 @@ public class GraphEditor extends Application {
             line = new Line (r1.getX() + (r1.getWidth()/2), r1.getY()+(r1.getHeight()/2), r2.getX()+(r2.getWidth()/2), r2.getY()+(r2.getHeight()/2));
             line.setStroke(Paint.valueOf(strColor));
             line.setStrokeWidth(3);
-            pane.getChildren().add(line);
         }
     }
 
     public static void main (String[] args) { launch(args); }
 }
+
