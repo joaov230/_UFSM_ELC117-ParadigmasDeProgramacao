@@ -173,7 +173,7 @@ public class GraphEditor extends Application {
                     WritableImage wi = new WritableImage(800,600);
                     WritableImage snapshot = pane.snapshot(new SnapshotParameters(), null);
 
-                    File output = new File ("C:/Users/Seven/Pictures/IDE/snapshot-" + new Date().getTime() + ".png");
+                    File output = new File ("snapshot-" + new Date().getTime() + ".png");
                     ImageIO.write(SwingFXUtils.fromFXImage(snapshot, null), "png", output);
                 } catch (IOException e) {
                     e.printStackTrace();

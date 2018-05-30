@@ -91,6 +91,7 @@ public class Grafo {
         return cont;
     }
 
+
     public int getTotalConnections () {
         int somatorio = 0;
         for (Vertice vert : vertices) {
