@@ -68,6 +68,10 @@ public class Grafo {
         contVert = 0;
     }
 
+    public void removeVertice (Vertice vert) {
+        vertices.remove(vert);
+    }
+
 
 //    Deixar do jeito certo
     public int getSize () {
@@ -85,7 +89,6 @@ public class Grafo {
             }
         }
         return cont;
-//        return vertices.size();
     }
 
     public int getTotalConnections () {

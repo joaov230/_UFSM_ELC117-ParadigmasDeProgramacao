@@ -64,40 +64,6 @@ public class GraphEditor extends Application {
         grafo = new Grafo();
 
         ///////////////////////////////////////////
-        // Botões das cores
-        Button btnRed = new Button();
-        Button btnGreen = new Button();
-        Button btnBlue = new Button();
-
-        btnRed.setMinSize(90, 30);
-        btnGreen.setMinSize(90, 30);
-        btnBlue.setMinSize(90, 30);
-
-        btnRed.setBackground(new Background(new BackgroundFill(Color.RED, null, null)));
-        btnGreen.setBackground(new Background(new BackgroundFill(Color.LIMEGREEN, null, null)));
-        btnBlue.setBackground(new Background(new BackgroundFill(Color.BLUE, null, null)));
-
-        btnRed.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent event) {
-                strColor = "#FF0000";
-                color = Color.RED;
-            }
-        });
-        btnGreen.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent event) {
-                strColor = "#32CD32";
-                color = Color.LIMEGREEN;
-            }
-        });
-        btnBlue.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent event) {
-                strColor = "#0000FF";
-                color = Color.BLUE;
-            }
-        });
-        ///////////////////////////////////////////
-
-        ///////////////////////////////////////////
         // Botões das formas
         Button btnShapeCircle = new Button("Circulo");
         Button btnShapeSquare = new Button("Quadrado");
@@ -117,23 +83,73 @@ public class GraphEditor extends Application {
         });
         ///////////////////////////////////////////
 
+        ///////////////////////////////////////////
+        // Botões das cores
+        Button btnRed = new Button();
+        Button btnGreen = new Button();
+        Button btnBlue = new Button();
+
+        btnRed.setMinSize(90, 30);
+        btnGreen.setMinSize(90, 30);
+        btnBlue.setMinSize(90, 30);
+
+        btnRed.setBackground(new Background(new BackgroundFill(Color.RED, null, null)));
+        btnGreen.setBackground(new Background(new BackgroundFill(Color.LIMEGREEN, null, null)));
+        btnBlue.setBackground(new Background(new BackgroundFill(Color.BLUE, null, null)));
+
+        btnRed.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                strColor = "#FF0000";
+                color = Color.RED;
+                btnShapeCircle.setBorder(new Border(new BorderStroke(Color.RED,
+                        BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+                btnShapeSquare.setBorder(new Border(new BorderStroke(Color.RED,
+                        BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+            }
+        });
+        btnGreen.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                strColor = "#32CD32";
+                color = Color.LIMEGREEN;
+                btnShapeCircle.setBorder(new Border(new BorderStroke(Color.LIMEGREEN,
+                        BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+                btnShapeSquare.setBorder(new Border(new BorderStroke(Color.LIMEGREEN,
+                        BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+            }
+        });
+        btnBlue.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                strColor = "#0000FF";
+                color = Color.BLUE;
+                btnShapeCircle.setBorder(new Border(new BorderStroke(Color.BLUE,
+                        BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+                btnShapeSquare.setBorder(new Border(new BorderStroke(Color.BLUE,
+                        BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+            }
+        });
+        ///////////////////////////////////////////
+
         labelVert = new Label(grafo.getSize() + " vertices");
-        labelVert.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        labelVert.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID,
+                CornerRadii.EMPTY, BorderWidths.DEFAULT)));
         labelVert.setMinSize(90, 30);
         labelVert.setAlignment(Pos.CENTER);
 
         labelAresta = new Label(grafo.getTotalConnections() + " arestas");
-        labelAresta.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        labelAresta.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID,
+                CornerRadii.EMPTY, BorderWidths.DEFAULT)));
         labelAresta.setMinSize(90, 30);
         labelAresta.setAlignment(Pos.CENTER);
 
         labelSelect = new Label("Select");
-        labelSelect.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        labelSelect.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID,
+                CornerRadii.EMPTY, BorderWidths.DEFAULT)));
         labelSelect.setMinSize(90, 30);
         labelSelect.setAlignment(Pos.CENTER);
 
         labelIntersect = new Label (grafo.verifyIntesection() + " interseções");
-        labelIntersect.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        labelIntersect.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID,
+                CornerRadii.EMPTY, BorderWidths.DEFAULT)));
         labelIntersect.setMinSize(90,30);
         labelIntersect.setAlignment(Pos.CENTER);
 
