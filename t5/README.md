@@ -1,4 +1,4 @@
-## Para dar Build usando o IntelliJ:
+### Para dar Build usando o IntelliJ:
 
 1 - Abra o IntelliJ
 
@@ -10,7 +10,7 @@
 
 
 
-## Para dar Build usando o terminal:
+### Para dar Build usando o terminal:
 
 1 - Vá para paradigmasdp/t5 e execute o seguinte comando:
  `javac t5/src/com/company/*.java`
