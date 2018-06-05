@@ -1,4 +1,4 @@
-## Para dar Build usando o IntelliJ:
+##Para dar Build usando o IntelliJ:
 
 - Abra o IntelliJ
 - Vá até File -> Open
