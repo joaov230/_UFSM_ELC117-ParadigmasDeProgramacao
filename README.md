@@ -10,6 +10,6 @@ Repositório para cadeira de Paradigmas de Programação
 
 [Trabalho 4 (Prolog)](t4)
 
-[Trabalho 5 (Java)](t5/src/com/company)
+[Trabalho 5 (Java)](t5)
 
 [Aulas Praticas (OO)](oo-praticas)
