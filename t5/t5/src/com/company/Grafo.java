@@ -89,8 +89,26 @@ public class Grafo {
             }
         }
         return cont;
+//        return vertices.size();
     }
 
+//    public void filterGrafo () {
+//        if (vertices.isEmpty()) {
+//            return;
+//        }
+//
+//        for (Vertice verticeAux : vertices) {
+//            if (verticeAux.getCircle() != null) {
+//                if (verticeAux.getCircle().getRadius() < 4) {
+//                    vertices.remove(verticeAux);
+//                }
+//            } else if (verticeAux.getRect() != null) {
+//                if (verticeAux.getRect().getWidth() < 4) {
+//                    vertices.remove(verticeAux);
+//                }
+//            }
+//        }
+//    }
 
     public int getTotalConnections () {
         int somatorio = 0;
