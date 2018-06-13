@@ -1,10 +1,8 @@
 package com.company;
 
-import javafx.scene.input.MouseDragEvent;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
@@ -18,7 +16,7 @@ public class Grafo {
     private int contVert;
 
 
-//    Constructor
+    //    Constructor
     public Grafo () {
         vertices = new ArrayList<Vertice>();
         linhasAdjacentes = new ArrayList<Adjacente>();
@@ -94,6 +92,7 @@ public class Grafo {
 
     public void clear () {
         vertices.clear();
+        linhasAdjacentes.clear();
         contVert = 0;
     }
 
@@ -170,4 +169,3 @@ public class Grafo {
         return null;
     }
 }
-

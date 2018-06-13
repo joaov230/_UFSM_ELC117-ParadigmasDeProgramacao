@@ -1,9 +1,6 @@
 package com.company;
 
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
 
 public class Adjacente {
 

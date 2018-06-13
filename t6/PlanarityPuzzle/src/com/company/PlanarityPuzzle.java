@@ -1,32 +1,22 @@
 package com.company;
 
 import javafx.application.Application;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToolBar;
-import javafx.scene.image.WritableImage;
-import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import sun.awt.Symbol;
-import sun.security.provider.certpath.Vertex;
 
-import javax.imageio.ImageIO;
-import java.io.File;
-import java.io.IOException;
 import java.util.*;
 
 
@@ -37,15 +27,11 @@ public class PlanarityPuzzle extends Application {
     String strColor = "#FF0000";
     Color color = Color.RED;
 
-    boolean first_vert = true;
-    Vertice vert;
-
     Pane pane;
     Label labelVert;
     Label labelAresta;
     Label labelIntersect;
 
-    Rectangle rect;
     Circle c;
     Line line;
 
@@ -57,6 +43,37 @@ public class PlanarityPuzzle extends Application {
 
 
         ///////////////////////////////////////////
+        // Botões das configs
+        Button btnNew = new Button("New");
+        Button btnExit = new Button("Exit");
+        Button btnNextLevel = new Button("Next Level");
+
+        btnNew.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                start(stage);
+            }
+        });
+        btnExit.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                System.exit(0);
+            }
+        });
+        btnNextLevel.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                resetGame();
+            }
+        });
+        ///////////////////////////////////////////
+
+        pane = new Pane();
+
+        createRandomVertexes();
+
+        ////////////////////////////////////////////////
+        // Label
 
         labelVert = new Label(grafo.getSize() + " vertices");
         labelVert.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID,
@@ -76,25 +93,7 @@ public class PlanarityPuzzle extends Application {
         labelIntersect.setMinSize(90,30);
         labelIntersect.setAlignment(Pos.CENTER);
 
-        ///////////////////////////////////////////
-        // Botões das configs
-        Button btnNew = new Button("New");
-        Button btnExit = new Button("Exit");
-
-        btnNew.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                start(stage);
-            }
-        });
-        btnExit.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                System.exit(0);
-            }
-        });
-        ///////////////////////////////////////////
-
+        ////////////////////////////////////////////////
 
         VBox vb = new VBox();
         vb.setSpacing(2);
@@ -103,20 +102,80 @@ public class PlanarityPuzzle extends Application {
 
         ToolBar tbTop = new ToolBar();
         tbTop.setOrientation(Orientation.HORIZONTAL);
-        tbTop.getItems().addAll(btnNew, btnExit);
+        tbTop.getItems().addAll(btnNew, btnExit, btnNextLevel);
 
         ToolBar tbRight = new ToolBar();
         tbRight.setOrientation(Orientation.VERTICAL);
         tbRight.getItems().addAll(vb);
 
-        pane = new Pane();
+        /////////////////////////////////////////////////
 
 
+        BorderPane bp = new BorderPane();
+        bp.setCenter(pane);
+        bp.setRight(tbRight);
+        bp.setTop(tbTop);
+
+        stage.setTitle("t6-jvbeltrame");
+        Scene scene = new Scene(bp, 800, 600);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+
+
+    //  Define se vai desenhar a linha ou não
+    private void setCirculo (Circle circulo) {
+
+        circulo.setOnMouseDragged(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                Vertice vertAux = grafo.getVertexByShape(circulo);
+                Line linhaFinal = grafo.getLineByFinalVertex(vertAux);
+
+                double x = event.getX();
+                double y = event.getY();
+                if (x < 0 || x > 700)
+                    x = circulo.getCenterX();
+                if (y < 0 || y > 565)
+                    y = circulo.getCenterY();
+
+                if (linhaFinal != null) {
+                    linhaFinal.setEndX(x);
+                    linhaFinal.setEndY(y);
+                }
+
+                Line linhaInicial = grafo.getLineByInitialVertex(vertAux);
+                if (linhaInicial != null) {
+                    linhaInicial.setStartX(x);
+                    linhaInicial.setStartY(y);
+                }
+
+
+                circulo.setCenterX(x);
+                circulo.setCenterY(y);
+
+                labelIntersect.setText(grafo.verifyIntesection() + " interseções");
+            }
+        });
+
+        circulo.setOnMouseReleased(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (grafo.verifyIntesection() == 0) {
+                    resetGame();
+                }
+            }
+        });
+    }
+
+
+    public void createRandomVertexes() {
         Random gerador = new Random();
         Vertice v1 = null;
         Vertice v2;
 
-        for (int i = 0; i < (nivel+2)*3; i++) {
+        for (int i = 0; (i < (nivel+2)*3) || (grafo.verifyIntesection() < 2); i++) {
             double x = gerador.nextInt(650);
             if (x < 20)
                 x += 20;
@@ -156,63 +215,29 @@ public class PlanarityPuzzle extends Application {
         }
 
         // faz a conexão final
-        v1 = grafo.getVertex(0);
-        v2 = grafo.getLastVertex();
+        v1 = grafo.getLastVertex();
+        v2 = grafo.getVertex(0);
         Circle c1 = v1.getCircle();
         Circle c2 = v2.getCircle();
 
-        Line lineAux = new Line (c1.getCenterX(), c1.getCenterY(), c2.getCenterX(), c2.getCenterY());
-        lineAux.setStroke(Paint.valueOf(strColor));
-        lineAux.setStrokeWidth(3);
+        line = new Line (c1.getCenterX(), c1.getCenterY(), c2.getCenterX(), c2.getCenterY());
+        line.setStroke(Paint.valueOf(strColor));
+        line.setStrokeWidth(3);
 
-        grafo.connectVertex(v1, v2, lineAux);
-        pane.getChildren().add(lineAux);
+        grafo.connectVertex(v1, v2, line);
+        pane.getChildren().add(line);
 
-
-
-
-
-        BorderPane bp = new BorderPane();
-        bp.setCenter(pane);
-        bp.setRight(tbRight);
-        bp.setTop(tbTop);
-
-        stage.setTitle("t6-jvbeltrame");
-        Scene scene = new Scene(bp, 800, 600);
-        stage.setScene(scene);
-        stage.show();
     }
 
 
-    double difCentroX;
-    double difCentroY;
-
-    //  Define se vai desenhar a linha ou não
-    private void setCirculo (Circle circulo) {
-
-        circulo.setOnMouseDragged(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                Vertice vertAux = grafo.getVertexByShape(circulo);
-                Line linhaFinal = grafo.getLineByFinalVertex(vertAux);
-                if (linhaFinal != null) {
-                    linhaFinal.setEndX(event.getX());
-                    linhaFinal.setEndY(event.getY());
-                }
-
-                Line linhaInicial = grafo.getLineByInitialVertex(vertAux);
-                if (linhaInicial != null) {
-                    linhaInicial.setStartX(event.getX());
-                    linhaInicial.setStartY(event.getY());
-                }
-
-                circulo.setCenterX(event.getX());
-                circulo.setCenterY(event.getY());
-            }
-        });
-
-
-
+    public void resetGame () {
+        grafo.clear();
+        pane.getChildren().clear();
+        nivel++;
+        createRandomVertexes();
+        labelIntersect.setText(grafo.verifyIntesection() + " interseções");
+        labelAresta.setText(grafo.getTotalConnections() + " arestas");
+        labelAresta.setText(grafo.getSize() + " vertices");
     }
 
 
