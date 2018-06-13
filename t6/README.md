@@ -12,7 +12,7 @@
 
 ### Para dar Build usando o terminal:
 
-1 - Vá para paradigmasdp/t5 e execute o seguinte comando:
+1 - Vá para paradigmasdp/t6 e execute o seguinte comando:
  `javac t6/src/com/company/*.java`
 
 2 - Execute o seguinte comando para abrir o programa:
