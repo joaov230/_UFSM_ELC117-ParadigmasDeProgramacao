@@ -46,7 +46,8 @@ public class PlanarityPuzzle extends Application {
         // Botões das configs
         Button btnNew = new Button("New");
         Button btnExit = new Button("Exit");
-        Button btnNextLevel = new Button("Next Level");
+        Button btnVerifyNextLevel = new Button("Done");
+        Button btnNextLevel = new Button("Force Next Level");
 
         btnNew.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -58,6 +59,16 @@ public class PlanarityPuzzle extends Application {
             @Override
             public void handle(ActionEvent event) {
                 System.exit(0);
+            }
+        });
+        btnVerifyNextLevel.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (grafo.verifyIntesection() == 0) {
+                    resetGame();
+                } else {
+                    newWindow();
+                }
             }
         });
         btnNextLevel.setOnAction(new EventHandler<ActionEvent>() {
@@ -102,7 +113,7 @@ public class PlanarityPuzzle extends Application {
 
         ToolBar tbTop = new ToolBar();
         tbTop.setOrientation(Orientation.HORIZONTAL);
-        tbTop.getItems().addAll(btnNew, btnExit, btnNextLevel);
+        tbTop.getItems().addAll(btnNew, btnExit, btnVerifyNextLevel, btnNextLevel);
 
         ToolBar tbRight = new ToolBar();
         tbRight.setOrientation(Orientation.VERTICAL);
@@ -122,6 +133,41 @@ public class PlanarityPuzzle extends Application {
         stage.show();
     }
 
+    // Cria uma nova janela avisando que o jogador não acabou ainda o jogo
+    private void newWindow () {
+        Stage primaryStage = new Stage();
+        Label notDoneYet = new Label("Você não completou o nível ainda!");
+        Button btnOk = new Button("Ok");
+        Button btnNext = new Button("Mas eu quero passar de nível!");
+
+        btnNext.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                resetGame();
+                primaryStage.close();
+            }
+        });
+        btnOk.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                primaryStage.close();
+            }
+        });
+
+        HBox hb = new HBox();
+        hb.setAlignment(Pos.CENTER);
+        hb.setSpacing(10);
+        hb.getChildren().addAll(btnNext, btnOk);
+
+        VBox vb = new VBox();
+        vb.setAlignment(Pos.CENTER);
+        vb.setSpacing(20);
+        vb.getChildren().addAll(notDoneYet, hb);
+
+        Scene scene = new Scene(vb, 300, 100);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
 
 
     //  Define se vai desenhar a linha ou não
@@ -158,19 +204,10 @@ public class PlanarityPuzzle extends Application {
                 labelIntersect.setText(grafo.verifyIntesection() + " interseções");
             }
         });
-
-        circulo.setOnMouseReleased(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if (grafo.verifyIntesection() == 0) {
-                    resetGame();
-                }
-            }
-        });
     }
 
 
-    public void createRandomVertexes() {
+    public void createRandomVertexes () {
         Random gerador = new Random();
         Vertice v1 = null;
         Vertice v2;
@@ -183,6 +220,8 @@ public class PlanarityPuzzle extends Application {
             if (y < 20)
                 y += 20;
             c = new Circle(x, y,20, color);
+            c.setStrokeWidth(2);
+            c.setStroke(Color.BLACK);
             grafo.addCircleVertex(c);
             setCirculo(grafo.getLastCircleVertex());
             pane.getChildren().add(grafo.getLastCircleVertex());
