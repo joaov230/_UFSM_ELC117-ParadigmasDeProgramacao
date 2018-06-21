@@ -87,25 +87,25 @@ public class BusLine extends Application {
 //        sndCol.setCellValueFactory(cellData -> cellData.getValue().ordemProperty());
 
         // Corrige a quebra de linha
-        fstCol.setCellFactory(column -> {
-            return new TableCell<TableData, String>() {
-                @Override
-                protected void updateItem(String item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if (item == null || empty) {
-                        setText(null);
-                        setStyle("");
-                    } else {
-                        Text text = new Text(item.toString());
-
-                        text.wrappingWidthProperty().bind(widthProperty());
-                        text.textProperty().bind(itemProperty());
-                        this.setWrapText(true);
-                        setGraphic(text);
-                    }
-                }
-            };
-        });
+//        fstCol.setCellFactory(column -> {
+//            return new TableCell<TableData, String>() {
+//                @Override
+//                protected void updateItem(String item, boolean empty) {
+//                    super.updateItem(item, empty);
+//                    if (item == null || empty) {
+//                        setText(null);
+//                        setStyle("");
+//                    } else {
+//                        Text text = new Text(item.toString());
+//
+//                        text.wrappingWidthProperty().bind(widthProperty());
+//                        text.textProperty().bind(itemProperty());
+//                        this.setWrapText(true);
+//                        setGraphic(text);
+//                    }
+//                }
+//            };
+//        });
 
 
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -170,10 +170,10 @@ public class BusLine extends Application {
         public SimpleStringProperty listaProperty() {
             return lista;
         }
-        public String getDataHora() {
+        public String getLista() {
             return lista.get();
         }
-        public void setDataHora(String dh) {
+        public void setLista(String dh) {
             this.lista.set(dh);
         }
 //
