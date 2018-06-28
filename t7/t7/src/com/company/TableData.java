@@ -1,5 +1,6 @@
 package com.company;
 
+import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.property.SimpleStringProperty;
 import java.util.List;
 
@@ -9,6 +10,7 @@ public class TableData {
     private final SimpleStringProperty linha;
     private final SimpleStringProperty latitude;
     private final SimpleStringProperty longitude;
+//    private final SimpleFloatProperty velocidade;
     private final SimpleStringProperty velocidade;
 
     public TableData(List lis) {
@@ -17,6 +19,7 @@ public class TableData {
         this.linha = new SimpleStringProperty(String.valueOf(lis.get(2)));
         this.latitude = new SimpleStringProperty(String.valueOf(lis.get(3)));
         this.longitude = new SimpleStringProperty(String.valueOf(lis.get(4)));
+//        this.velocidade = new SimpleFloatProperty(Float.parseFloat(lis.get(5).toString()));
         this.velocidade = new SimpleStringProperty(String.valueOf(lis.get(5)));
     }
 
