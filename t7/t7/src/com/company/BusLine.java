@@ -66,6 +66,8 @@ public class BusLine extends Application {
         final Label label = new Label("Onibus - RJ");
         label.setFont(new Font("Arial", 20));
 
+        /***********************/
+
         TableColumn<TableData, String> fstCol = new TableColumn<TableData, String>("Data e Hora");
         fstCol.setMinWidth(100);
         fstCol.setCellValueFactory(cellData -> cellData.getValue().dataHoraProperty());
@@ -100,19 +102,19 @@ public class BusLine extends Application {
 
         table.setItems(data);
 
+        /***********************/
+
         Button btn = new Button("Adicione um cronograma de onibus");
 
         final VBox vbox = new VBox();
         vbox.setSpacing(5);
         vbox.setPadding(new Insets(10, 10, 10, 10));
         vbox.getChildren().addAll(label, new Separator(), table, btn);
-
         vbox.applyCss();
         vbox.layout();
 
         BorderPane bp = new BorderPane();
         bp.setCenter(vbox);
-
 
         btn.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
@@ -142,12 +144,13 @@ public class BusLine extends Application {
             }
         });
 
+        stage.setTitle("t7-jvbeltrame");
         stage.setScene(new Scene(bp, 1200, 550));
         stage.show();
     }
 
 
-
+    // Monta o gráfico de pizza
     private PieChart createPieChart (ObservableList<TableData> dataa) {
         float parados = 0;
         float andando = 0;
@@ -171,7 +174,7 @@ public class BusLine extends Application {
     }
 
 
-
+    // Monta o gráfico de barras
     private BarChart<String, Number> createBarChart(ObservableList<TableData> dataa) {
         CategoryAxis xAxis = new CategoryAxis();
         NumberAxis yAxis = new NumberAxis();
@@ -200,4 +203,3 @@ public class BusLine extends Application {
     }
 
 }
-
