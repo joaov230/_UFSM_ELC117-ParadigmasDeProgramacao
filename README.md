@@ -19,6 +19,6 @@ Repositório para cadeira de Paradigmas de Programação
 [Trabalho 6 - Planarity Puzzle (Java/JavaFX)](t6)
 
 [Trabalho 7 - Cronograma de Ônibus do RJ em tempo real (Java/JavaFx)](t6)
-
-### Aulas Praticas: 
+##
+## Aulas Praticas: 
 [Aulas Praticas (OO)](oo-praticas)
