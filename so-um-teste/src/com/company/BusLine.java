@@ -103,6 +103,7 @@ public class BusLine extends Application {
 
         Button btn = new Button("Adicione um cronograma de onibus");
         Button btnFilter = new Button("Filtrar");
+        btnFilter.setDisable(true);
 
         Label labelFilter = new Label("Digite a linha para filtrar a tabela:");
         TextField textField = new TextField ();
@@ -112,15 +113,16 @@ public class BusLine extends Application {
             public void handle(ActionEvent event) {
                 String filtro;
                 filtro = textField.getText();
+                btn.setDisable(true);
                 for (int i = 0; i < data.size(); i++) {
                     if (!data.get(i).getLinha().toString().equals(filtro)) {
                         data.remove(i);
                         i--;
                     }
                 }
+                btn.setDisable(false);
             }
         });
-
 
         VBox vb1 = new VBox();
         vb1.setAlignment(Pos.CENTER);
@@ -163,6 +165,7 @@ public class BusLine extends Application {
                     VBox vb = new VBox();
                     vb.getChildren().addAll(pchart, bchart);
                     bp.setLeft(vb);
+                    btnFilter.setDisable(false);
                 }
             }
         });
